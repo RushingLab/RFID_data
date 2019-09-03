@@ -1,1 +1,5 @@
-print("Have this script run whatever data cleaning you do")
+print("Updating feeder data")
+
+source("R/update_feeder_data.R")
+
+update_feeder_data(year = 2019)
