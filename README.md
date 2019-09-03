@@ -3,7 +3,7 @@
 
 # RFID_data
 
-The goal of RFID.data is to automate management and storage of RFID data collected by members of the Rushing Lab. 
+The goal of RFID_data is to automate management and storage of RFID data collected by members of the Rushing Lab. 
 
 The workflow used here to update and archive data is modified from the template repo found at [UpdatingData.org](https://www.updatingdata.org/).
 
