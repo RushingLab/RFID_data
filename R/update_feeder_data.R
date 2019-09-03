@@ -2,7 +2,7 @@
 #' @export
 
 update_feeder_data <- function(year){
-  feeder_updates <- readRDS("../data/feeder_updates.rds")
+  feeder_updates <- readRDS("./data/feeder_updates.rds")
 
   PABU_sites <- rdrop2::drop_dir("RFID_data/PABU")$name
   LAZB_sites <- rdrop2::drop_dir("RFID_data/LAZB")$name
@@ -27,9 +27,9 @@ update_feeder_data <- function(year){
         PABU_update <- max(1, PABU_update)
         feeder_updates$last_update[feeder_updates$Feeder == feeders[f]] <- last_update
 
-        rdrop2::drop_download(paste0("RFID_data/PABU/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"), local_path = paste0("../data-raw/", PABU_sites[i], "/", feeders[f]), overwrite = TRUE)
+        rdrop2::drop_download(paste0("RFID_data/PABU/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"), local_path = paste0("./data-raw/", PABU_sites[i], "/", feeders[f]), overwrite = TRUE)
 
-        rfid <- readLines(paste0("../data-raw/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"))
+        rfid <- readLines(paste0("./data-raw/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"))
         if(length(which(rfid == ""|rfid == " ")) != 0){
           rfid <- rfid[-which(rfid == ""|rfid == " ")]
         }else{
@@ -45,7 +45,7 @@ update_feeder_data <- function(year){
 
         ## write converted data as .csv
 
-        write.csv(rfid_df, file = paste0("../data-raw/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"), row.names = FALSE)
+        write.csv(rfid_df, file = paste0("./data-raw/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"), row.names = FALSE)
       }
     }
   }
@@ -55,7 +55,7 @@ update_feeder_data <- function(year){
       feeders <- rdrop2::drop_dir(paste0("RFID_Data/PABU/", PABU_sites[i]))$name
 
       for(f in 1:length(feeders)){
-        rfid <- read.csv(paste0("../data-raw/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"))
+        rfid <- read.csv(paste0("./data-raw/", PABU_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"))
 
         if(i == 1 & f == 1){
           rfid_df <- rfid
@@ -73,19 +73,19 @@ update_feeder_data <- function(year){
                       Month = lubridate::month(rfid_df$Date))
 
     #### Remove observer checks
-    obs_rfid <- read.csv("../data-raw/RFID_observers.csv")
+    obs_rfid <- read.csv("./data-raw/RFID_observers.csv")
 
     obs_checks <- which(rfid_df$RFID %in% obs_rfid$ID)
 
     pabu_checks <- rfid_df[obs_checks,]
-    saveRDS(pabu_checks, paste0("../data/PABU/", year, "_obs_checks.rds"))
+    saveRDS(pabu_checks, paste0("./data/PABU/", year, "_obs_checks.rds"))
 
     rfid_df <- rfid_df[-obs_checks,]
 
     #### Save PABU data ----
 
-    saveRDS(rfid_df, paste0("../data/PABU/", year, "_RFID.rds"))
-    write.csv(rfid_df, paste0("../data/PABU/", year, "_RFID.csv"), row.names = FALSE)
+    saveRDS(rfid_df, paste0("./data/PABU/", year, "_RFID.rds"))
+    write.csv(rfid_df, paste0("./data/PABU/", year, "_RFID.csv"), row.names = FALSE)
   }
 
   ## For LAZB
@@ -105,9 +105,9 @@ update_feeder_data <- function(year){
 
         feeder_updates$last_update[feeder_updates$Feeder == feeders[f]] <- last_update
 
-        rdrop2::drop_download(paste0("RFID_data/LAZB/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"), local_path = paste0("../data-raw/", LAZB_sites[i], "/", feeders[f]), overwrite = TRUE)
+        rdrop2::drop_download(paste0("RFID_data/LAZB/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"), local_path = paste0("./data-raw/", LAZB_sites[i], "/", feeders[f]), overwrite = TRUE)
 
-        rfid <- readLines(paste0("../data-raw/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"))
+        rfid <- readLines(paste0("./data-raw/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.txt"))
         if(length(which(rfid == ""|rfid == " ")) != 0){
           rfid <- rfid[-which(rfid == ""|rfid == " ")]
         }else{
@@ -123,7 +123,7 @@ update_feeder_data <- function(year){
 
         ## write converted data as .csv
 
-        write.csv(rfid_df, file = paste0("../data-raw/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"), row.names = FALSE)
+        write.csv(rfid_df, file = paste0("./data-raw/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"), row.names = FALSE)
 
       }
     }
@@ -134,7 +134,7 @@ update_feeder_data <- function(year){
       feeders <- rdrop2::drop_dir(paste0("RFID_Data/LAZB/", LAZB_sites[i]))$name
 
       for(f in 1:length(feeders)){
-        rfid <- read.csv(paste0("../data-raw/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"))
+        rfid <- read.csv(paste0("./data-raw/", LAZB_sites[i], "/", feeders[f], "/", year, "_DATALOG.csv"))
 
         if(i == 1 & f == 1){
           rfid_df <- rfid
@@ -152,20 +152,20 @@ update_feeder_data <- function(year){
                       Month = lubridate::month(rfid_df$Date))
 
     #### Remove observer checks
-    obs_rfid <- read.csv("../data-raw/RFID_observers.csv")
+    obs_rfid <- read.csv("./data-raw/RFID_observers.csv")
 
     obs_checks <- which(rfid_df$RFID %in% obs_rfid$ID)
 
     LAZB_checks <- rfid_df[obs_checks,]
-    saveRDS(lazb_checks, paste0("../data/LAZB/", year, "_obs_checks.rds"))
+    saveRDS(lazb_checks, paste0("./data/LAZB/", year, "_obs_checks.rds"))
 
     rfid_df <- rfid_df[-obs_checks,]
 
     #### Save LAZB data ----
 
-    saveRDS(rfid_df, paste0("../data/LAZB/", year, "_RFID.rds"))
-    write.csv(rfid_df, paste0("../data/LAZB/", year, "_RFID.csv"), row.names = FALSE)
+    saveRDS(rfid_df, paste0("./data/LAZB/", year, "_RFID.rds"))
+    write.csv(rfid_df, paste0("./data/LAZB/", year, "_RFID.csv"), row.names = FALSE)
   }
 
-  saveRDS(feeder_updates, '../data/feeder_updates.rds')
+  saveRDS(feeder_updates, './data/feeder_updates.rds')
 }
