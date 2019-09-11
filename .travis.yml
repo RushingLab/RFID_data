@@ -9,7 +9,6 @@ install:
   
 script:
   - Rscript testthat.R
-  - Rscript datascript.R
   - Rscript archive.R
 
 after_success:
