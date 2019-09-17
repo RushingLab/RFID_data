@@ -6,7 +6,7 @@
 
 config <- yaml::yaml.load_file("config.yml")
 
-repo <- git2r::repository(".")
+repo <- git2r::repository(".", discover = TRUE)
 repo_url <- paste("https://github.com/", config$repo, ".git", sep = "")
 git2r::remote_add(repo, name = "deploy", url = repo_url)
 cred <- git2r::cred_token("GITHUB_TOKEN")
